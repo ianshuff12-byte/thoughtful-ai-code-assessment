@@ -1,0 +1,23 @@
+{
+  "name": "thoughtful-package-sorter",
+  "version": "1.0.0",
+  "description": "TypeScript package sorter for robotic automation factory",
+  "main": "dist/package-sorter.js",
+  "types": "dist/package-sorter.d.ts",
+  "scripts": {
+    "build": "tsc",
+    "start": "node dist/package-sorter.js",
+    "dev": "ts-node package-sorter.ts",
+    "test": "ts-node package-sorter.test.ts",
+    "test:build": "npm run build && node dist/package-sorter.test.js",
+    "test:all": "npm run test && npm run test:build"
+  },
+  "keywords": ["typescript", "package", "sorter", "automation", "robotics"],
+  "author": "Thoughtful AI",
+  "license": "MIT",
+  "devDependencies": {
+    "typescript": "^5.0.0",
+    "ts-node": "^10.9.0",
+    "@types/node": "^20.0.0"
+  }
+}

@@ -1,25 +1,28 @@
 # Package Sorter
 
-A JavaScript function for sorting packages in Thoughtful's robotic automation factory based on their dimensions and mass.
+A TypeScript application for sorting packages in Thoughtful's robotic automation factory based on their dimensions and mass.
 
 ## Overview
 
-The `sort()` function dispatches packages to the correct stack according to their volume and mass, helping robotic arms handle packages appropriately.
+The `sort()` function dispatches packages to the correct stack according to their volume and mass, helping robotic arms handle packages appropriately. Built with TypeScript for enhanced type safety and robust error handling.
 
 ## Function Signature
 
-```javascript
-sort(width, height, length, mass)
+```typescript
+sort(width: number, height: number, length: number, mass: number): StackType
 ```
 
 ### Parameters
-- `width` (number): Package width in centimeters
-- `height` (number): Package height in centimeters  
-- `length` (number): Package length in centimeters
-- `mass` (number): Package mass in kilograms
+- `width` (number): Package width in centimeters (must be > 0)
+- `height` (number): Package height in centimeters (must be > 0)
+- `length` (number): Package length in centimeters (must be > 0)
+- `mass` (number): Package mass in kilograms (must be ≥ 0)
 
 ### Returns
-- `string`: Stack name where the package should be dispatched
+- `StackType`: One of `'STANDARD'`, `'SPECIAL'`, or `'REJECTED'`
+
+### Throws
+- `Error`: When input parameters are invalid (negative, zero dimensions, NaN, or non-numeric)
 
 ## Sorting Rules
 
@@ -32,10 +35,17 @@ sort(width, height, length, mass)
 - **SPECIAL**: Packages that are either bulky OR heavy (but not both)
 - **REJECTED**: Packages that are both bulky AND heavy
 
+## Installation
+
+```bash
+npm install
+```
+
 ## Usage
 
-```javascript
-const sort = require('./package-sorter');
+### TypeScript
+```typescript
+import sort, { StackType } from './package-sorter';
 
 // Standard package
 console.log(sort(10, 10, 10, 5)); // "STANDARD"
@@ -51,12 +61,53 @@ console.log(sort(10, 10, 10, 25)); // "SPECIAL"
 
 // Both bulky and heavy
 console.log(sort(200, 10, 10, 25)); // "REJECTED"
+
+// Error handling
+try {
+    sort(-10, 20, 30, 5); // Throws error for negative dimension
+} catch (error) {
+    console.error(error.message);
+}
 ```
 
-## Running the Code
+### JavaScript (after compilation)
+```javascript
+const sort = require('./dist/package-sorter').default;
+```
 
+## Development
+
+### Build the project
 ```bash
-node package-sorter.js
+npm run build
 ```
 
-This will run the included test cases and display the results.
+### Run TypeScript directly
+```bash
+npm run dev
+```
+
+### Run compiled JavaScript
+```bash
+npm start
+```
+
+### Run tests
+```bash
+npm test           # Run TypeScript tests directly
+npm run test:build # Build and run compiled tests
+npm run test:all   # Run both TypeScript and compiled tests
+```
+
+## Type Definitions
+
+```typescript
+type StackType = 'STANDARD' | 'SPECIAL' | 'REJECTED';
+
+interface PackageDimensions {
+    width: number;
+    height: number;
+    length: number;
+    mass: number;
+}
+```
